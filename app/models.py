@@ -44,3 +44,63 @@ class userUpdate(ModelForm):
         'website', 'facebook', 'instagram', 'twitter', 'linkedin', 'gender', 'language', 'currency',
         'is_agency','certification']
 
+class Property(models.Model):
+    name = models.CharField(max_length=50, null = True, blank = True)
+    tagline = models.CharField(max_length=100,null = True, blank = True)
+    address = models.CharField(max_length=100,null = True, blank = True)
+    profile_photo = models.ImageField(null=True, blank=True)
+    cover_photo = models.ImageField(null=True, blank=True)
+    for_rent = models.BooleanField(default=True)
+    price = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    number_rated = models.PositiveSmallIntegerField(null=True, blank=True)
+    area = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
+    bedrooms = models.PositiveSmallIntegerField(null=True, blank=True)
+    bathrooms = models.PositiveSmallIntegerField(null=True, blank=True)
+    garages = models.PositiveSmallIntegerField(null=True, blank=True)
+    APARTMENT = 'APARTMENT'
+    OFFICE = 'OFFICE'
+    HOME = 'HOME'
+    PROPERTY_TYPES = (
+        (APARTMENT, 'Apartment'),
+        (OFFICE, 'Office'),
+        (HOME, 'Home'),
+    )
+    property_type = models.CharField(max_length=100, choices=PROPERTY_TYPES, blank=False)
+    CONSTRUCTION_YEAR = (
+        (1996, '1996'),
+        (1997, '1997'),
+        (1998, '1998'),
+        (1999, '1999'),
+        (2000, '2000'),
+        (2001, '2001'),
+    )
+    construction_year = models.CharField(max_length=10,choices = CONSTRUCTION_YEAR, blank = False)
+    last_renovation = models.CharField(max_length=10, choices = CONSTRUCTION_YEAR, blank = False)
+    description = models.TextField(max_length=500, blank=True)
+    amenities = models.ForeignKey('Amenities', on_delete = models.CASCADE,)
+    gps = models.CharField(max_length=500,null=True, blank=True)
+    user = models.ForeignKey('User', on_delete = models.CASCADE,)
+
+class Proprty_Amenities(models.Model):
+    amenities = models.ForeignKey('Amenities', on_delete = models.CASCADE,)
+    user = models.ForeignKey('User', on_delete = models.CASCADE,)
+
+class Amenities(models.Model):
+    name = models.CharField(max_length=80,null=True, blank=True)
+
+class Review(models.Model):
+    title = models.CharField(max_length=40,null = True, blank = True)
+    Date = models.DateTimeField(auto_now=True)
+    description = models.TextField(max_length=500, blank=True)
+    property = models.ForeignKey('Property', on_delete = models.CASCADE,)
+    user = models.ForeignKey('User', on_delete = models.CASCADE,)
+
+class Gallery(models.Model):
+    images = models.ImageField(null=True, blank=True)
+    property = models.ForeignKey('Property', on_delete = models.CASCADE,)
+
+
+
+
+
